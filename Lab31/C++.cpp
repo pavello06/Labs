@@ -155,7 +155,7 @@ void getFileNormalReading(std::string& pathToFile)
             isCorrect = false;
             std::cout << "Проверьте корректность ввода пути к файлу!\n";
         }
-        if (isCorrect && !isNotAbleToReading(pathToFile))
+        if (isCorrect && isNotAbleToReading(pathToFile))
         {
             isCorrect = false;
             std::cout << "Файл закрыт для чтения!\n";
@@ -165,12 +165,12 @@ void getFileNormalReading(std::string& pathToFile)
             isCorrect = false;
             std::cout << "Файл пуст!\n";
         }
-        if (isCorrect && !isNotRightCountStrings(pathToFile))
+        if (isCorrect && isNotRightCountStrings(pathToFile))
         {
             isCorrect = false;
             std::cout << "Количество строк в файле не две!\n";
         }
-        if (isCorrect && !isNotCorrectStrings(pathToFile))
+        if (isCorrect && isNotCorrectStrings(pathToFile))
             isCorrect = false;
     } while (!isCorrect);
 }
