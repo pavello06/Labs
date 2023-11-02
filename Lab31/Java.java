@@ -329,7 +329,7 @@ public class Main {
                 writer.write("элементов, удовлетворяющих условию, нет!");
             else
                 while (i < resAStr.length) {
-                    System.out.print("\'" + resAStr[i] + "\'; ");
+                    writer.write("\'" + resAStr[i] + "\'; ");
                     i++;
                 }
             writer.close();
