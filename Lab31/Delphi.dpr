@@ -189,13 +189,13 @@ Begin
     Repeat
         IsCorrect := True;
         PathToFile := ReadPathToFile();
-        If IsCorrect Then
-            AssignFile(F, PathToFile);
         If IsNotExists(PathToFile) Then
         Begin
             IsCorrect := False;
             Writeln('Проверьте корректность ввода пути к файлу!');
         End;
+        If IsCorrect Then
+            AssignFile(F, PathToFile);
         If IsCorrect And IsNotAbleToWriting(PathToFile) Then
         Begin
             IsCorrect := False;
