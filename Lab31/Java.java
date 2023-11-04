@@ -12,7 +12,6 @@ public class Main {
     public static final double
             FACTOR = 1.247;
     static Scanner scanConsole = new Scanner(System.in);
-    static Scanner scanFile;
     static File file;
     public static void printTask() {
         System.out.print("Данная программа находит элементы в двух строках по одному из критериев.\n\n");
@@ -44,9 +43,9 @@ public class Main {
                 isCorrect = false;
             }
             if (isCorrect && iOption != OPTION1 && iOption != OPTION2) {
-                    isCorrect = false;
-                    System.out.print("Некорректный выбор!\n");
-                    System.out.print("Повторите попытку: \n");
+                isCorrect = false;
+                System.out.print("Некорректный выбор!\n");
+                System.out.print("Повторите попытку: \n");
             }
         } while (!isCorrect);
         return iOption;
@@ -59,7 +58,7 @@ public class Main {
             isCorrect = true;
             System.out.println("Введите путь к файлу с расширением.txt с двумя строками, с длинами[" + MIN_LEN + "; " + MAX_LEN + "]: ");
             pathToFile = scanConsole.nextLine();
-            if (pathToFile.length() < 5 || !pathToFile.substring(pathToFile.length() - 4).equals(".txt")) {
+            if (pathToFile.length() < 5 || pathToFile.charAt(pathToFile.length() - 4) != '.' || pathToFile.charAt(pathToFile.length() - 3) != 't' || pathToFile.charAt(pathToFile.length() - 2) != 'x' || pathToFile.charAt(pathToFile.length() - 1) != 't') {
                 isCorrect = false;
                 System.out.println("Расширение файла не .txt!");
             }
@@ -98,28 +97,29 @@ public class Main {
     public static boolean isNotRightCountStrings() {
         boolean isRight;
         isRight = false;
-        try {scanFile = new Scanner(file);} catch (FileNotFoundException e) {}
-        scanFile.nextLine();
-        if (!scanFile.hasNext())
-            isRight = true;
-        scanFile.nextLine();
-        if (scanFile.hasNext())
-            isRight = true;
-        scanFile.close();
+        try(Scanner scanFile = new Scanner(file)) {
+            scanFile.nextLine();
+            if (!scanFile.hasNext())
+                isRight = true;
+            scanFile.nextLine();
+            if (scanFile.hasNext())
+                isRight = true;
+        } catch (Exception e) {}
         return isRight;
     }
     public static boolean isNotCorrectStrings() {
         String str;
         boolean isRight;
         str = "";
-        try {scanFile = new Scanner(file);} catch (FileNotFoundException e) {}
-        str = scanFile.nextLine();
-        isRight = checkStringLen(str);
-        if (isRight) {
+        isRight = false;
+        try(Scanner scanFile = new Scanner(file)) {
             str = scanFile.nextLine();
             isRight = checkStringLen(str);
-        }
-        scanFile.close();
+            if (isRight) {
+                str = scanFile.nextLine();
+                isRight = checkStringLen(str);
+            }
+        } catch (Exception e) {}
         return !isRight;
     }
     public static void getFileNormalReading() {
@@ -166,7 +166,7 @@ public class Main {
             }
         } while (!isCorrect);
     }
-    public static String readFileString() {
+    public static String readFileString(Scanner scanFile) {
         String str;
         str = "";
         str = scanFile.nextLine();
@@ -190,10 +190,10 @@ public class Main {
         System.out.print("Вводить матрицу через консоль - " + OPTION2 + "\n");
         if (chooseOption() == OPTION1) {
             getFileNormalReading();
-            try {scanFile = new Scanner(file);} catch (FileNotFoundException e) {}
-            twoStrings[0] = readFileString();
-            twoStrings[1] = readFileString();
-            scanFile.close();
+            try(Scanner scanFile = new Scanner(file)) {
+                twoStrings[0] = readFileString(scanFile);
+                twoStrings[1] = readFileString(scanFile);
+            } catch (Exception e) {}
         }
         else {
             twoStrings[0] = readConsoleString(1);
