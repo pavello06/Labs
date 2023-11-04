@@ -19,8 +19,7 @@ public class Main {
     public static boolean checkStringLen(String str) {
         boolean isCorrect;
         isCorrect = true;
-        if (str.length() < MIN_LEN || str.length() > MAX_LEN)
-        {
+        if (str.length() < MIN_LEN || str.length() > MAX_LEN) {
             System.out.print("Длина строки не попадает в диапазон!\n");
             isCorrect = false;
         }
@@ -56,43 +55,26 @@ public class Main {
         pathToFile = "";
         do {
             isCorrect = true;
-            System.out.println("Введите путь к файлу с расширением.txt с двумя строками, с длинами[" + MIN_LEN + "; " + MAX_LEN + "]: ");
+            System.out.print("Введите путь к файлу с расширением.txt с двумя строками, с длинами[" + MIN_LEN + "; " + MAX_LEN + "]: \n");
             pathToFile = scanConsole.nextLine();
             if (pathToFile.length() < 5 || pathToFile.charAt(pathToFile.length() - 4) != '.' || pathToFile.charAt(pathToFile.length() - 3) != 't' || pathToFile.charAt(pathToFile.length() - 2) != 'x' || pathToFile.charAt(pathToFile.length() - 1) != 't') {
                 isCorrect = false;
-                System.out.println("Расширение файла не .txt!");
+                System.out.print("Расширение файла не .txt!\n");
             }
         } while (!isCorrect);
         return pathToFile;
     }
     public static boolean isNotExists(String pathToFile) {
-        boolean isRight;
-        isRight = true;
-        file = new File(pathToFile);
-        if (file.exists())
-            isRight = false;
-        return isRight;
+        return !file.exists();
     }
     public static boolean isNotAbleToReading() {
-        boolean isRight;
-        isRight = true;
-        if (file.canRead())
-            isRight = false;
-        return isRight;
+        return !file.canRead();
     }
     public static boolean isNotAbleToWriting() {
-        boolean isRight;
-        isRight = true;
-        if (file.canWrite())
-            isRight = false;
-        return isRight;
+        return !file.canWrite();
     }
     public static boolean isEmpty() {
-        boolean isRight;
-        isRight = false;
-        if (file.length() == 0)
-            isRight = true;
-        return isRight;
+        return file.length() == 0;
     }
     public static boolean isNotRightCountStrings() {
         boolean isRight;
@@ -158,7 +140,7 @@ public class Main {
             pathToFile = readPathFile();
             if (isNotExists(pathToFile)) {
                 isCorrect = false;
-                System.out.println("Проверьте корректность ввода пути к файлу!");
+                System.out.print("Проверьте корректность ввода пути к файлу!\n");
             }
             if (isCorrect && isNotAbleToWriting()) {
                 isCorrect = false;
@@ -177,7 +159,7 @@ public class Main {
         boolean isCorrect;
         str = "";
         do {
-            System.out.println("Введите строку номер " + num + ", с длиной[" + MIN_LEN + ";" + MAX_LEN + "]: ");
+            System.out.print("Введите строку номер " + num + ", с длиной[" + MIN_LEN + ";" + MAX_LEN + "]: \n");
             str = scanConsole.nextLine();
             isCorrect = checkStringLen(str);
         } while (!isCorrect);
