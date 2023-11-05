@@ -193,8 +193,7 @@ public class Main {
         double step;
         int i, iStep;
         char buf;
-        step = aStr.length - 1;
-        while (step >= 1) {
+        for (step = aStr.length - 1; step >= 1; step /= FACTOR) {
             iStep = (int) step;
             for (i = 0; step + i < aStr.length; i++)
                 if ((int) aStr[i] > (int) aStr[i + iStep]) {
@@ -202,7 +201,6 @@ public class Main {
                     aStr[i] = aStr[i + iStep];
                     aStr[i + iStep] = buf;
                 }
-            step /= FACTOR;
         }
     }
     public static void sortAStrs(char[] aStr1, char[] aStr2) {
