@@ -141,7 +141,6 @@ Var
     Str: String;
     IsRight: Boolean;
 Begin
-    Str := '';
     Reset(F);
     ReadLn(F, Str);
     IsRight := CheckStringLen(Str);
@@ -450,19 +449,19 @@ Begin
     Begin
         MakeCombSameAStr(CombAStr, AStr1, AStr2);
         SortOneAStr(CombAStr);
-        FindSame(CombAStr, ResAStr)
+        FindSame(CombAStr, ResAStr);
     End
     Else If Action = 2 Then
     Begin
         MakeCombUniqueAStr(CombAStr, AStr1, AStr2, AStr1);
         SortOneAStr(CombAStr);
-        FindUnique(CombAStr, ResAStr)
+        FindUnique(CombAStr, ResAStr);
     End
     Else
     Begin
         MakeCombUniqueAStr(CombAStr, AStr1, AStr2, AStr2);
         SortOneAStr(CombAStr);
-        FindUnique(CombAStr, ResAStr)
+        FindUnique(CombAStr, ResAStr);
     End; 
     PrintResult(ResAStr);
     FreeMemory(AStr1, AStr2, CombAStr, ResAStr);
