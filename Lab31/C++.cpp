@@ -2,8 +2,6 @@
 #include <string>
 #include <fstream>
 const int
-    OPTION1 = 1,
-    OPTION2 = 2,
     MIN_LEN = 1,
     MAX_LEN = 100;
 const double
@@ -23,34 +21,46 @@ bool checkStringLen(std::string str)
     }
     return isCorrect;
 }
-int chooseOption()
+int chooseOption(int count)
 {
-    int option;
-    bool isCorrect;
+    int option, i;
+    bool isCorrect, isNotCorrectChoise;
     option = 0;
+    isNotCorrectChoise = false;
     do {
         isCorrect = true;
         std::cin >> option;
         if (std::cin.fail())
         {
-            isCorrect = false;
             std::cin.clear();
             std::cout << "Проверьте корректность ввода данных!\n";
             std::cout << "Повторите попытку: \n";
+            isCorrect = false;
             while (std::cin.get() != '\n');
         }
         if (isCorrect && std::cin.get() != '\n')
         {
-            isCorrect = false;
             std::cout << "Проверьте корректность ввода данных!\n";
             std::cout << "Повторите попытку: \n";
+            isCorrect = false;
             while (std::cin.get() != '\n');
         }
-        if (isCorrect && option != OPTION1 && option != OPTION2)
+        if (isCorrect)
         {
-            isCorrect = false;
-            std::cout << "Некорректный выбор!\n";
+            isNotCorrectChoise = true;
+            i = 0;
+            while (isNotCorrectChoise && i < count)
+            {
+                if (option == i + 1)
+                    isNotCorrectChoise = false;
+                i++;
+            }
+        }
+        if (isNotCorrectChoise)
+        {
+            std::cout << "Проверьте корректность ввода данных!\n";
             std::cout << "Повторите попытку: \n";
+            isCorrect = false;
         }
     } while (!isCorrect);
     return option;
@@ -59,13 +69,12 @@ std::string readPathFile()
 {
     std::string pathToFile;
     bool isCorrect;
-    pathToFile = "";
     do
     {
         isCorrect = true;
         std::cout << "Введите путь к файлу с расширением.txt с двумя строками, с длинами[" << MIN_LEN << "; " << MAX_LEN << "]: ";
         std::cin >> pathToFile;
-        if (pathToFile.size() < 5 || pathToFile.substr(pathToFile.size() - 4, 4) != ".txt")
+        if (pathToFile.size() < 5 || pathToFile[pathToFile.length() - 4] != '.' || pathToFile[pathToFile.length() - 3] != 't' || pathToFile[pathToFile.length() - 2] != 'x' || pathToFile[pathToFile.length() - 1] != 't')
         {
             std::cout << "Расширение файла не .txt!\n";
             isCorrect = false;
@@ -131,7 +140,6 @@ bool isNotCorrectStrings(std::string pathToFile)
 {
     std::string str;
     bool isRight;
-    str = "";
     std::ifstream file(pathToFile);
     std::getline(file, str);
     isRight = checkStringLen(str);
@@ -145,7 +153,6 @@ bool isNotCorrectStrings(std::string pathToFile)
 void getFileNormalReading(std::string& pathToFile)
 {
     bool isCorrect;
-    pathToFile = "";
     do
     {
         isCorrect = true;
@@ -181,12 +188,12 @@ void getFileNormalWriting(std::string& pathToFile)
     {
         isCorrect = true;
         pathToFile = readPathFile();
-        if (!isNotExists(pathToFile))
+        if (isNotExists(pathToFile))
         {
             isCorrect = false;
             std::cout << "Проверьте корректность ввода пути к файлу!\n";
         }
-        if (isCorrect && !isNotAbleToWriting(pathToFile))
+        if (isCorrect && isNotAbleToWriting(pathToFile))
         {
             isCorrect = false;
             std::cout << "Файл закрыт для записи!\n";
@@ -196,7 +203,6 @@ void getFileNormalWriting(std::string& pathToFile)
 std::string readFileString(std::ifstream& file)
 {
     std::string str;
-    str = "";
     std::getline(file, str);
     return str;
 }
@@ -204,7 +210,6 @@ std::string readConsoleString(int num)
 {
     std::string str;
     bool isCorrect;
-    str = "";
     do
     {
         std::cout << "Введите строку номер " << num << ", с длиной[" << MIN_LEN << ";" << MAX_LEN << "]: ";
@@ -216,11 +221,12 @@ std::string readConsoleString(int num)
 void readStrings(std::string& str1, std::string& str2)
 {
     std::string pathToFile;
-    pathToFile = "";
+    int option;
     std::cout << "Вы хотите: \n";
-    std::cout << "Вводить матрицу через файл - " << OPTION1 << "\n";
-    std::cout << "Вводить матрицу через консоль - " << OPTION2 << "\n";
-    if (chooseOption() == OPTION1)
+    std::cout << "Вводить матрицу через файл - 1\n";
+    std::cout << "Вводить матрицу через консоль - 2\n";
+    option = chooseOption(2);
+    if (option == 1)
     {
         getFileNormalReading(pathToFile);
         std::ifstream file(pathToFile);
@@ -252,22 +258,16 @@ void sortOneAStr(char*& aStr, int lenAStr)
     double step;
     int i, iStep;
     char buf;
-    step = lenAStr - 1;
-    while (step >= 1)
+    for (step = lenAStr - 1; step >= 1; step /= FACTOR)
     {
         iStep = trunc(step);
-        i = 0;
-        while (step + i < lenAStr)
-        {
+        for (i = 0; step + i < lenAStr; i++)
             if (static_cast<int>(aStr[i]) > static_cast<int>(aStr[i + iStep]))
             {
                 buf = aStr[i];
                 aStr[i] = aStr[i + iStep];
                 aStr[i + iStep] = buf;
             }
-            i++;
-        }
-        step /= FACTOR;
     }
 }
 void sortAStrs(char*& aStr1, char*& aStr2, int lenAStr1, int lenAStr2)
@@ -275,78 +275,99 @@ void sortAStrs(char*& aStr1, char*& aStr2, int lenAStr1, int lenAStr2)
     sortOneAStr(aStr1, lenAStr1);
     sortOneAStr(aStr2, lenAStr2);
 }
-void makeUniqueAStr(char*& uniqueAStr, char*& aStr1, char*& aStr2, int& lenUAStr, int lenAStr1, int lenAStr2)
+int plusAStr(char*& combAStr, char* aStr, int j, int lenAStr1)
 {
-    char* bufArr;
-    int i, j, maxIndex;
-    bufArr = new char[lenAStr1 + lenAStr2];
-    j = 0;
+    int i, maxIndex;
     maxIndex = lenAStr1 - 1;
     for (i = 0; i < maxIndex; i++)
-        if (aStr1[i] != aStr1[i + 1])
+        if (aStr[i] != aStr[i + 1])
         {
-            bufArr[j] = aStr1[i];
+            combAStr[j] = aStr[i];
             j++;
         }
-    bufArr[j] = aStr1[maxIndex];
-    j++;
-    maxIndex = lenAStr2 - 1;
-    for (i = 0; i < maxIndex; i++)
-        if (aStr2[i] != aStr2[i + 1])
-        {
-            bufArr[j] = aStr2[i];
-            j++;
-        }
-    bufArr[j] = aStr2[maxIndex];
-    lenUAStr = j + 1;
-    uniqueAStr = new char[lenUAStr];
-    for (i = 0; i < lenUAStr; i++)
-        uniqueAStr[i] = bufArr[i];
+    combAStr[j] = aStr[maxIndex];
+    return ++j;
+}
+void makeCombSameAStr(char*& combAStr, char* aStr1, char* aStr2, int& lenCAStr, int lenAStr1, int lenAStr2)
+{
+    char* bufArr;
+    int i, j;
+    bufArr = new char[lenAStr1 + lenAStr2];
+    j = 0;
+    j = plusAStr(bufArr, aStr1, j, lenAStr1);
+    j = plusAStr(bufArr, aStr2, j, lenAStr2);
+    lenCAStr = j;
+    combAStr = new char[lenCAStr];
+    for (i = 0; i < lenCAStr; i++)
+        combAStr[i] = bufArr[i];
     delete[] bufArr;
 }
-void findSame(char* uniqueAStr, char*& resAStr, int lenUAStr, int& lenRAStr)
+void makeCombUniqueAStr(char*& combAStr, char* aStr1, char* aStr2, char* aStr3, int& lenCAStr, int lenAStr1, int lenAStr2, int lenAStr3)
 {
-    int i, j, maxIndex;
-    j = 0;
     char* bufArr;
-    bufArr = new char[lenUAStr];
-    maxIndex = lenUAStr - 1;
-    for (i = 0; i < maxIndex; i++)
-        if (uniqueAStr[i] == uniqueAStr[i + 1])
+    int i, j;
+    bufArr = new char[lenAStr1 + lenAStr2 + lenAStr3];
+    j = 0;
+    j = plusAStr(bufArr, aStr1, j, lenAStr1);
+    j = plusAStr(bufArr, aStr2, j, lenAStr2);
+    j = plusAStr(bufArr, aStr3, j, lenAStr3);
+    lenCAStr = j;
+    combAStr = new char[lenCAStr];
+    for (i = 0; i < lenCAStr; i++)
+        combAStr[i] = bufArr[i];
+    delete[] bufArr;
+    
+}
+void findSame(char* combAStr, char*& resAStr, int lenCAStr, int& lenRAStr)
+{
+    char* bufArr;
+    int i, j, maxIndex;
+    bufArr = new char[lenCAStr];
+    i = 0;
+    j = 0;
+    maxIndex = lenCAStr - 1;
+    while (i < maxIndex)
+    {
+        if (combAStr[i] == combAStr[i + 1])
         {
-            bufArr[j] = uniqueAStr[i];
+            bufArr[j] = combAStr[i];
             j++;
-        }
-    lenRAStr = j;
+            i++;
+        } 
+        i++;
+    }
+    if (j == 0)
+        lenRAStr = 1;
+    else
+        lenRAStr = j;
     resAStr = new char[lenRAStr];
     for (i = 0; i < lenRAStr; i++)
         resAStr[i] = bufArr[i];
     delete[] bufArr;
 }
-void findUnique(char* uniqueAStr, char*& resAStr, int lenUAStr, int& lenRAStr)
+void findUnique(char* combAStr, char*& resAStr, int lenCAStr, int& lenRAStr)
 {
-    int i, j, maxIndex;
-    j = 0;
     char* bufArr;
-    bufArr = new char[lenUAStr];
-    maxIndex = lenUAStr - 1;
+    int i, j, maxIndex;
+    bufArr = new char[lenCAStr];
     i = 0;
+    j = 0;
+    maxIndex = lenCAStr - 1;
     while (i < maxIndex)
     {
-        if (uniqueAStr[i] != uniqueAStr[i + 1])
-        {
-            bufArr[j] = uniqueAStr[i];
-            j++;
-        }
-        else
-            i++;
+        if (combAStr[i] == combAStr[i + 1])
+            if (i == maxIndex - 1 || combAStr[i] != combAStr[i + 2])
+            {
+                bufArr[j] = combAStr[i];
+                j++;
+                i++;
+            }
+            else
+                i += 2;
         i++;
     }
-    if (uniqueAStr[maxIndex] != uniqueAStr[maxIndex - 1])
-    {
-        bufArr[j] = uniqueAStr[maxIndex];
-        lenRAStr = j + 1;
-    }
+    if (j == 0)
+        lenRAStr = 1;
     else
         lenRAStr = j;
     resAStr = new char[lenRAStr];
@@ -357,48 +378,42 @@ void findUnique(char* uniqueAStr, char*& resAStr, int lenUAStr, int& lenRAStr)
 int chooseAction()
 {
     std::cout << "Вы хотите: \n";
-    std::cout << "Найти одинаковые символы в обеих строках - " << OPTION1 << "\n";
-    std::cout << "Найти уникальные символы в обеих строках - " << OPTION2 << "\n";
-    return chooseOption();
+    std::cout << "Найти одинаковые символы в обеих строках - 1\n";
+    std::cout << "Найти уникальные символы в первой строке - 2\n";
+    std::cout << "Найти уникальные символы во второй строке - 3\n";
+    return chooseOption(3);
 }
 void printConsoleResult(char* resAStr, int lenRAStr)
 {
     int i;
-    i = 0;
     std::cout << "\nЭлементы, удовлетворяющие условию: ";
     if (resAStr[0] == '\0')
         std::cout << "элементов, удовлетворяющих условию, нет!";
     else
-        while (i < lenRAStr)
-        {
-            std::cout << "\'" << resAStr[i] << "\'; ";
-            i++;
-        }
+        for (i = 0; i < lenRAStr; i++)
+            std::cout << "'" << resAStr[i] << "'; ";
 }
 void printFileResult(std::string pathToFile, char* resAStr, int lenRAStr)
 {
     int i;
     std::ofstream file(pathToFile, std::ios::app);
-    i = 0;
     file << "\nЭлементы, удовлетворяющие условию: ";
     if (resAStr[0] == '\0')
         file << "элементов, удовлетворяющих условию, нет!";
     else
-        while (i < lenRAStr)
-        {
-            file << "\'" << resAStr[i] << "\'; ";
-            i++;
-        }
+        for (i = 0; i < lenRAStr; i++)
+            file << "'" << resAStr[i] << "'; ";
     file.close();
 }
 void printResult(char* resAStr, int lenRAStr)
 {
     std::string pathToFile;
-    pathToFile = "";
+    int option;
     std::cout << "Вы хотите: \n";
-    std::cout << "Выводить строки через файл - " << OPTION1 << "\n";
-    std::cout << "Выводить строки через консоль - " << OPTION2 << "\n";
-    if (chooseOption() == OPTION1)
+    std::cout << "Выводить строки через файл - 1\n";
+    std::cout << "Выводить строки через консоль - 2\n";
+    option = chooseOption(2);
+    if (option == 1)
     {
         getFileNormalWriting(pathToFile);
         printFileResult(pathToFile, resAStr, lenRAStr);
@@ -406,36 +421,46 @@ void printResult(char* resAStr, int lenRAStr)
     else
         printConsoleResult(resAStr, lenRAStr);
 }
-void freeMemory(char*& aStr1, char*& aStr2, char*& uniqueAStr, char*& resAStr)
+void freeMemory(char*& aStr1, char*& aStr2, char*& combAStr, char*& resAStr)
 {
     delete[] aStr1;
     delete[] aStr2;
-    delete[] uniqueAStr;
+    delete[] combAStr;
     delete[] resAStr;
 }
 int main()
 {
     setlocale(LC_ALL, "RU");
+    std::string str1, str2;
     char* aStr1;
     char* aStr2;
-    char* uniqueAStr;
+    char* combAStr;
     char* resAStr;
-    int lenAStr1, lenAStr2, lenUAStr, lenRAStr, action;
-    std::string str1, str2;
-    str1 = "";
-    str2 = "";
+    int lenAStr1, lenAStr2, lenCAStr, lenRAStr, action;
     printTask();
     readStrings(str1, str2);
     fillAStrs(str1, str2, aStr1, aStr2, lenAStr1, lenAStr2);
     sortAStrs(aStr1, aStr2, lenAStr1, lenAStr2);
-    makeUniqueAStr(uniqueAStr, aStr1, aStr2, lenUAStr, lenAStr1, lenAStr2);
-    sortOneAStr(uniqueAStr, lenUAStr);
     action = chooseAction();
-    if (action == OPTION1)
-        findSame(uniqueAStr, resAStr, lenUAStr, lenRAStr);
-    else
-        findUnique(uniqueAStr, resAStr, lenUAStr, lenRAStr);
+    if (action == 1)
+    {
+        makeCombSameAStr(combAStr, aStr1, aStr2, lenCAStr, lenAStr1, lenAStr2);
+        sortOneAStr(combAStr, lenCAStr);
+        findSame(combAStr, resAStr, lenCAStr, lenRAStr);
+    }
+    else if (action == 2)
+    {
+        makeCombUniqueAStr(combAStr, aStr1, aStr2, aStr1, lenCAStr, lenAStr1, lenAStr2, lenAStr1);
+        sortOneAStr(combAStr, lenCAStr);
+        findUnique(combAStr, resAStr, lenCAStr, lenRAStr);
+    }
+    else 
+    {
+        makeCombUniqueAStr(combAStr, aStr1, aStr2, aStr2, lenCAStr, lenAStr1, lenAStr2, lenAStr2);
+        sortOneAStr(combAStr, lenCAStr);
+        findUnique(combAStr, resAStr, lenCAStr, lenRAStr);
+    }
     printResult(resAStr, lenRAStr);
-    freeMemory(aStr1, aStr2, uniqueAStr, resAStr);
+    freeMemory(aStr1, aStr2, combAStr, resAStr);
     return 0;
 }
