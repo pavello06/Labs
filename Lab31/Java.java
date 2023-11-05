@@ -1,12 +1,8 @@
 import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 public class Main {
     public static final int
-            OPTION1 = 1,
-            OPTION2 = 2,
             MIN_LEN = 1,
             MAX_LEN = 100;
     public static final double
@@ -25,12 +21,12 @@ public class Main {
         }
         return isCorrect;
     }
-    public static int chooseOption() {
-        int iOption;
+    public static int chooseOption(int count) {
         String sOption;
-        boolean isCorrect;
+        int iOption, i;
+        boolean isCorrect, isNotCorrectChoise;
         iOption = 0;
-        sOption = "";
+        isNotCorrectChoise = false;
         do {
             isCorrect = true;
             sOption = scanConsole.nextLine();
@@ -41,18 +37,26 @@ public class Main {
                 System.out.print("Повторите попытку: \n");
                 isCorrect = false;
             }
-            if (isCorrect && iOption != OPTION1 && iOption != OPTION2) {
-                isCorrect = false;
+            if (isCorrect) {
+                isNotCorrectChoise = true;
+                i = 0;
+                while (isNotCorrectChoise && i < count) {
+                    if (iOption == i + 1)
+                        isNotCorrectChoise = false;
+                    i++;
+                }
+            }
+            if (isNotCorrectChoise) {
                 System.out.print("Некорректный выбор!\n");
                 System.out.print("Повторите попытку: \n");
+                isCorrect = false;
             }
         } while (!isCorrect);
         return iOption;
     }
-    public static String readPathFile() {
-        boolean isCorrect;
+    public static void readPathFile() {
         String pathToFile;
-        pathToFile = "";
+        boolean isCorrect;
         do {
             isCorrect = true;
             System.out.print("Введите путь к файлу с расширением.txt с двумя строками, с длинами[" + MIN_LEN + "; " + MAX_LEN + "]: \n");
@@ -62,9 +66,9 @@ public class Main {
                 System.out.print("Расширение файла не .txt!\n");
             }
         } while (!isCorrect);
-        return pathToFile;
+        file = new File(pathToFile);
     }
-    public static boolean isNotExists(String pathToFile) {
+    public static boolean isNotExists() {
         return !file.exists();
     }
     public static boolean isNotAbleToReading() {
@@ -92,7 +96,6 @@ public class Main {
     public static boolean isNotCorrectStrings() {
         String str;
         boolean isRight;
-        str = "";
         isRight = false;
         try(Scanner scanFile = new Scanner(file)) {
             str = scanFile.nextLine();
@@ -106,12 +109,10 @@ public class Main {
     }
     public static void getFileNormalReading() {
         boolean isCorrect;
-        String pathToFile;
-        pathToFile = "";
         do {
             isCorrect = true;
-            pathToFile = readPathFile();
-            if (isNotExists(pathToFile)) {
+            readPathFile();
+            if (isNotExists()) {
                 isCorrect = false;
                 System.out.print("Проверьте корректность ввода пути к файлу!\n");
             }
@@ -133,12 +134,10 @@ public class Main {
     }
     public static void getFileNormalWriting() {
         boolean isCorrect;
-        String pathToFile;
-        pathToFile = "";
         do {
             isCorrect = true;
-            pathToFile = readPathFile();
-            if (isNotExists(pathToFile)) {
+            readPathFile();
+            if (isNotExists()) {
                 isCorrect = false;
                 System.out.print("Проверьте корректность ввода пути к файлу!\n");
             }
@@ -150,14 +149,12 @@ public class Main {
     }
     public static String readFileString(Scanner scanFile) {
         String str;
-        str = "";
         str = scanFile.nextLine();
         return str;
     }
     public static String readConsoleString(int num) {
         String str;
         boolean isCorrect;
-        str = "";
         do {
             System.out.print("Введите строку номер " + num + ", с длиной[" + MIN_LEN + ";" + MAX_LEN + "]: \n");
             str = scanConsole.nextLine();
@@ -167,10 +164,12 @@ public class Main {
     }
     public static String[] readStrings() {
         String[] twoStrings = new String[2];
+        int option;
         System.out.print("Вы хотите: \n");
-        System.out.print("Вводить матрицу через файл - " + OPTION1 + "\n");
-        System.out.print("Вводить матрицу через консоль - " + OPTION2 + "\n");
-        if (chooseOption() == OPTION1) {
+        System.out.print("Вводить матрицу через файл - 1\n");
+        System.out.print("Вводить матрицу через консоль - 2\n");
+        option = chooseOption(2);
+        if (option == 1) {
             getFileNormalReading();
             try(Scanner scanFile = new Scanner(file)) {
                 twoStrings[0] = readFileString(scanFile);
@@ -184,8 +183,8 @@ public class Main {
         return twoStrings;
     }
     public static char[] fillOneAStr(String str) {
-        int i;
         char[] aStr = new char[str.length()];
+        int i;
         for (i = 0; i < str.length(); i++)
             aStr[i] = str.charAt(i);
         return aStr;
@@ -197,15 +196,12 @@ public class Main {
         step = aStr.length - 1;
         while (step >= 1) {
             iStep = (int) step;
-            i = 0;
-            while (step + i < aStr.length ) {
+            for (i = 0; step + i < aStr.length; i++)
                 if ((int) aStr[i] > (int) aStr[i + iStep]) {
                     buf = aStr[i];
                     aStr[i] = aStr[i + iStep];
                     aStr[i + iStep] = buf;
                 }
-                i++;
-            }
             step /= FACTOR;
         }
     }
@@ -213,70 +209,89 @@ public class Main {
         sortOneAStr(aStr1);
         sortOneAStr(aStr2);
     }
-    public static char[] makeUniqueAStr(char[] aStr1, char[] aStr2) {
-        char[] uniqueAStr;
+    public static int plusAStr(char[] combAStr, char[] aStr, int j) {
+        int i, maxIndex;
+        maxIndex = aStr.length - 1;
+        for (i = 0; i < maxIndex; i++)
+            if (aStr[i] != aStr[i + 1]) {
+                combAStr[j] = aStr[i];
+                j++;
+            }
+        combAStr[j] = aStr[maxIndex];
+        return ++j;
+    }
+    public static char[] makeCombSameAStr(char[] aStr1, char[] aStr2) {
+        char[] combAStr;
         char[] bufArr;
-        int i, j, maxIndex;
+        int i, j;
         bufArr = new char[aStr1.length + aStr2.length];
         j = 0;
-        maxIndex = aStr1.length - 1;
-        for (i = 0; i < maxIndex; i++)
-            if (aStr1[i] != aStr1[i + 1]) {
-                bufArr[j] = aStr1[i];
-                j++;
-            }
-        bufArr[j] = aStr1[maxIndex];
-        j++;
-        maxIndex = aStr2.length - 1;
-        for (i = 0; i < maxIndex; i++)
-            if (aStr2[i] != aStr2[i + 1]) {
-                bufArr[j] = aStr2[i];
-                j++;
-            }
-        bufArr[j] = aStr2[maxIndex];
-        uniqueAStr = new char[j + 1];
-        for (i = 0; i < uniqueAStr.length; i++)
-            uniqueAStr[i] = bufArr[i];
-        return uniqueAStr;
+        j = plusAStr(bufArr, aStr1, j);
+        j = plusAStr(bufArr, aStr2, j);
+        combAStr = new char[j];
+        for (i = 0; i < combAStr.length; i++)
+            combAStr[i] = bufArr[i];
+        return combAStr;
     }
-    public static char[] findSame(char[] uniqueAStr) {
-        int i, j, maxIndex;
-        char[] resAStr;
-        j = 0;
+    public static char[] makeCombUniqueAStr(char[] aStr1, char[] aStr2, char[] aStr3) {
+        char[] combAStr;
         char[] bufArr;
-        bufArr = new char[uniqueAStr.length];
-        maxIndex = uniqueAStr.length - 1;
-        for (i = 0; i < maxIndex; i++)
-            if (uniqueAStr[i] == uniqueAStr[i + 1]) {
-                bufArr[j] = uniqueAStr[i];
+        int i, j;
+        bufArr = new char[aStr1.length + aStr2.length + aStr3.length];
+        j = 0;
+        j = plusAStr(bufArr, aStr1, j);
+        j = plusAStr(bufArr, aStr2, j);
+        j = plusAStr(bufArr, aStr3, j);
+        combAStr = new char[j];
+        for (i = 0; i < combAStr.length; i++)
+            combAStr[i] = bufArr[i];
+        return combAStr;
+    }
+    public static char[] findSame(char[] combAStr) {
+        char[] resAStr;
+        char[] bufArr;
+        int i, j, maxIndex;
+        bufArr = new char[combAStr.length];
+        i = 0;
+        j = 0;
+        maxIndex = combAStr.length - 1;
+        while (i < maxIndex) {
+            if (combAStr[i] == combAStr[i + 1]) {
+                bufArr[j] = combAStr[i];
                 j++;
+                i++;
             }
-        resAStr = new char[j];
-        for (i = 0; i < j; i++)
+            i++;
+        }
+        if (j == 0)
+            resAStr = new char[1];
+        else
+            resAStr = new char[j];
+        for (i = 0; i < resAStr.length; i++)
             resAStr[i] = bufArr[i];
         return resAStr;
     }
-    public static char[] findUnique(char[] uniqueAStr) {
-        int i, j, maxIndex;
+    public static char[] findUnique(char[] combAStr) {
         char[] resAStr;
         char[] bufArr;
-        j = 0;
-        bufArr = new char[uniqueAStr.length];
-        maxIndex = uniqueAStr.length - 1;
+        int i, j, maxIndex;
+        bufArr = new char[combAStr.length];
         i = 0;
+        j = 0;
+        maxIndex = combAStr.length - 1;
         while (i < maxIndex) {
-            if (uniqueAStr[i] != uniqueAStr[i + 1]) {
-                bufArr[j] = uniqueAStr[i];
-                j++;
-            }
-            else
-                i++;
+            if (combAStr[i] == combAStr[i + 1])
+                if (i == maxIndex - 1 || combAStr[i] != combAStr[i + 2]) {
+                    bufArr[j] = combAStr[i];
+                    j++;
+                    i++;
+                }
+                else
+                    i += 2;
             i++;
         }
-        if (uniqueAStr[maxIndex] != uniqueAStr[maxIndex - 1]) {
-            bufArr[j] = uniqueAStr[maxIndex];
-            resAStr = new char[j + 1];
-        }
+        if (j == 0)
+            resAStr = new char[1];
         else
             resAStr = new char[j];
         for (i = 0; i < resAStr.length; i++)
@@ -285,43 +300,38 @@ public class Main {
     }
     public static int chooseAction() {
         System.out.print("Вы хотите: \n");
-        System.out.print("Найти одинаковые символы в обеих строках - " + OPTION1 + "\n");
-        System.out.print("Найти уникальные символы в обеих строках - " + OPTION2 + "\n");
-        return chooseOption();
+        System.out.print("Найти одинаковые символы в обеих строках - 1\n");
+        System.out.print("Найти уникальные символы в первой строке - 2\n");
+        System.out.print("Найти уникальные символы во второй строке - 3\n");
+        return chooseOption(3);
     }
     public static void printConsoleResult(char[] resAStr) {
         int i;
-        i = 0;
         System.out.print("\nЭлементы, удовлетворяющие условию: ");
         if (resAStr[0] == '\0')
             System.out.print("элементов, удовлетворяющих условию, нет!");
         else
-            while (i < resAStr.length) {
-                System.out.print("\'" + resAStr[i] + "\'; ");
-                i++;
-            }
+            for (i = 0; i < resAStr.length; i++)
+                System.out.print("'" + resAStr[i] + "'; ");
     }
     public static void printFileResult(char[] resAStr) {
         int i;
-        i = 0;
-        try {
-            FileWriter writer = new FileWriter(file, true);
+        try(FileWriter writer = new FileWriter(file, true)) {
             writer.write("\nЭлементы, удовлетворяющие условию: ");
             if (resAStr[0] == '\0')
                 writer.write("элементов, удовлетворяющих условию, нет!");
             else
-                while (i < resAStr.length) {
-                    writer.write("\'" + resAStr[i] + "\'; ");
-                    i++;
-                }
-            writer.close();
-        } catch (IOException e) {}
+                for (i = 0; i < resAStr.length; i++)
+                    writer.write("'" + resAStr[i] + "'; ");
+        } catch (Exception e) {}
     }
     public static void printResult(char[] resAStr) {
+        int option;
         System.out.print("Вы хотите: \n");
-        System.out.print("Выводить строки через файл - " + OPTION1 + "\n");
-        System.out.print("Выводить строки через консоль - " + OPTION2 + "\n");
-        if (chooseOption() == OPTION1) {
+        System.out.print("Выводить строки через файл - 1\n");
+        System.out.print("Выводить строки через консоль - 2\n");
+        option = chooseOption(2);
+        if (option == 1) {
             getFileNormalWriting();
             printFileResult(resAStr);
         }
@@ -332,7 +342,7 @@ public class Main {
         String[] twoStrings;
         char[] aStr1;
         char[] aStr2;
-        char[] uniqueAStr;
+        char[] combAStr;
         char[] resAStr;
         int action;
         printTask();
@@ -340,13 +350,22 @@ public class Main {
         aStr1 = fillOneAStr(twoStrings[0]);
         aStr2 = fillOneAStr(twoStrings[1]);
         sortAStrs(aStr1, aStr2);
-        uniqueAStr = makeUniqueAStr(aStr1, aStr2);
-        sortOneAStr(uniqueAStr);
         action = chooseAction();
-        if (action == OPTION1)
-            resAStr = findSame(uniqueAStr);
-        else
-            resAStr = findUnique(uniqueAStr);
+        if (action == 1) {
+            combAStr = makeCombSameAStr(aStr1, aStr2);
+            sortOneAStr(combAStr);
+            resAStr = findSame(combAStr);
+        }
+        else if (action == 2) {
+            combAStr = makeCombUniqueAStr(aStr1, aStr2, aStr1);
+            sortOneAStr(combAStr);
+            resAStr = findUnique(combAStr);
+        }
+        else {
+            combAStr = makeCombUniqueAStr(aStr1, aStr2, aStr2);
+            sortOneAStr(combAStr);
+            resAStr = findUnique(combAStr);
+        }
         printResult(resAStr);
         scanConsole.close();
     }
