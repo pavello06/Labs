@@ -323,6 +323,7 @@ void findSame(char* combAStr, char*& resAStr, int lenCAStr, int& lenRAStr)
     char* bufArr;
     int i, j, maxIndex;
     bufArr = new char[lenCAStr];
+    bufArr[0] = '\0';
     i = 0;
     j = 0;
     maxIndex = lenCAStr - 1;
@@ -350,6 +351,7 @@ void findUnique(char* combAStr, char*& resAStr, int lenCAStr, int& lenRAStr)
     char* bufArr;
     int i, j, maxIndex;
     bufArr = new char[lenCAStr];
+    bufArr[0] = '\0';
     i = 0;
     j = 0;
     maxIndex = lenCAStr - 1;
