@@ -26,8 +26,9 @@ int chooseOption(int count)
     int option, i;
     bool isCorrect, isNotCorrectChoise;
     option = 0;
-    isNotCorrectChoise = false;
-    do {
+    do 
+    {
+        isNotCorrectChoise = false;
         isCorrect = true;
         std::cin >> option;
         if (std::cin.fail())
