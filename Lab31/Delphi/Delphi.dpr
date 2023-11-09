@@ -31,8 +31,8 @@ Var
     IsCorrect, IsNotCorrectChoise: Boolean;
 Begin
     IOption := 1;
-    IsNotCorrectChoise := False;
     Repeat
+        IsNotCorrectChoise := False;
         IsCorrect := True;
         ReadLn(SOption);
         Try
