@@ -26,8 +26,8 @@ public class Main {
         int iOption, i;
         boolean isCorrect, isNotCorrectChoise;
         iOption = 0;
-        isNotCorrectChoise = false;
         do {
+            isNotCorrectChoise = false;
             isCorrect = true;
             sOption = scanConsole.nextLine();
             try {
