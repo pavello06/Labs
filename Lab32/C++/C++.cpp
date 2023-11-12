@@ -162,7 +162,7 @@ ErrorsCode isCorrectFileSet(std::string pathToFile)
     std::ifstream file(pathToFile);
     while (error == CORRECT && !file.eof())
     {
-        file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::getline(file, sSetEl);
         error = isCorrectSetLen(sSetEl);
         if (error == CORRECT)
             error = isCorrectSetEl(sSetEl);
