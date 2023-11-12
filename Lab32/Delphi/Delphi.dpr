@@ -54,7 +54,7 @@ Begin
     End;
     IsCorrectSetEl := Error;
 End;
-Procedure FillSet(SSetEl: String; SetEl: TSet);
+Procedure FillSet(SSetEl: String; Var SetEl: TSet);
 Var
     I: Integer;
 Begin
@@ -217,7 +217,7 @@ Begin
             WriteLn(ERRORS[Ord(Error)], #13#10'Повторите попытку: ');
     Until Error = CORRECT;
 End;
-Procedure ReadFileSet(Var F: TextFile; SetEl: TSet);
+Procedure ReadFileSet(Var F: TextFile; Var SetEl: TSet);
 Var
     SSetEl: String;
 Begin
@@ -233,7 +233,7 @@ Begin
         Error := IsCorrectSetEl(SSetEl);
     IsCorrectConsoleSet := Error;
 End;
-Procedure ReadConsoleSet(Num: Integer; SetEl: TSet);
+Procedure ReadConsoleSet(Num: Integer; Var SetEl: TSet);
 Var
     Error: ERRORS_CODE;
     SSetEl: String;
