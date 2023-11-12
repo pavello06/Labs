@@ -56,7 +56,7 @@ ErrorsCode isCorrectSetEl(std::string sSetEl)
     }
     return error;
 }
-void fillSet(std::string sSetEl, std::set<char> setEl)
+void fillSet(std::string sSetEl, std::set<char>& setEl)
 {
     int i;
     for (i = 0; i < sSetEl.length(); i += 2)
@@ -204,7 +204,7 @@ void getFileNormalWriting(std::string& pathToFile)
             std::cout << ERRORS[error] << "\nПовторите попытку: ";
     } while (error != CORRECT);
 }
-void readFileSet(std::ifstream& file, std::set<char> setEl)
+void readFileSet(std::ifstream& file, std::set<char>& setEl)
 {
     std::string sSetEl;
     std::getline(file, sSetEl);
@@ -218,7 +218,7 @@ ErrorsCode isCorrectConsoleSet(std::string sSetEl)
         error = isCorrectSetEl(sSetEl);
     return error;
 }
-void readConsoleSet(int num, std::set<char> setEl)
+void readConsoleSet(int num, std::set<char>& setEl)
 {
     ErrorsCode error;
     std::string sSetEl;
