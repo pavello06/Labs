@@ -243,7 +243,7 @@ Begin
         ReadLn(SSetEl);
         Error := IsCorrectConsoleSet(SSetEl);
         If Error <> CORRECT Then
-            WriteLn(ERRORS[Ord(Error)], #13#10'Повторите попытку: ');
+            Write(ERRORS[Ord(Error)], #13#10'Повторите попытку: ');
     Until Error = CORRECT;
     FillSet(SSetEl, SetEl);
 End;
