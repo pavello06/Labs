@@ -286,6 +286,7 @@ void printConsoleResult(std::set<char> y1)
 void printFileResult(std::string pathToFile, std::set<char> y1)
 {
     std::ofstream file(pathToFile, std::ios::app);
+    file << "\nЦифры в множестве: ";
     if (y1.empty())
         file << "элементов, удовлетворяющих условию, нет!";
     else
