@@ -4,7 +4,7 @@
 #include <fstream>
 enum ErrorsCode
 {
-    CORRECT,
+    CORRECT = -1,
     INCORRECT_SET_LENGTH,
     INCORRECT_SET_El,
     INCORRECT_CHOICE,
@@ -19,8 +19,7 @@ const int
     MAX_S = 85,
     AMOUNT_S = 3;
 const std::string 
-    ERRORS[] = { "",
-                 "Длина множества не попадает в диапазон!",
+    ERRORS[] = { "Длина множества не попадает в диапазон!",
                  "Элементы множества разделяются пробелом!",
                  "Некорректный выбор!",
                  "Расширение файла не .txt!",
