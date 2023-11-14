@@ -122,8 +122,11 @@ Var
 Begin
     Error := CORRECT;
     Try
-        Reset(F);
-        CloseFile(F);
+        Try
+            Reset(F);
+        Finally
+            CloseFile(F);
+        End;
     Except
         Error := IS_NOT_READABLE;
     End;
@@ -135,8 +138,11 @@ Var
 Begin
     Error := CORRECT;
     Try
-        Append(F);
-        CloseFile(F);
+        Try
+            Append(F);
+        Finally
+            CloseFile(F);
+        End;
     Except
         Error := Is_NOT_WRITEABLE;
     End;
