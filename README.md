@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <th>Block</th>
+            <th>Blocks</th>
             <th>Lab1</th>
             <th>Lab2</th>
             <th>Lab3</th>
