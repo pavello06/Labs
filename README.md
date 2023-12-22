@@ -10,25 +10,25 @@
     </thead>
     <tbody>
         <tr>
-            <td rowspan=4 align="center">Block1</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Block1</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
         </tr>
         <tr>
-            <td rowspan=4 align="center">Block2</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Block2</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
         </tr>
         <tr>
-            <td rowspan=4 align="center">Block3</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
-            <td rowspan=2 align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Block3</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">Delphi<br>C++<br>Java</td>
         </tr>
     </tbody>
 </table>
