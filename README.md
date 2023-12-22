@@ -28,7 +28,7 @@
             <td align="center">Delphi<br>C++<br>Java</td>
             <td align="center">Delphi<br>C++<br>Java</td>
             <td align="center">Delphi<br>C++<br>Java</td>
-            <td align="center">Delphi<br>C++<br>Java</td>
+            <td align="center">-----</td>
         </tr>
     </tbody>
 </table>
