@@ -83,7 +83,7 @@
                 <a href = "https://github.com/pavello06/Labs/blob/main/Block3/Lab3/Java/Java.java">Java</a><br>
                 <a href = "https://github.com/pavello06/Labs/blob/main/Forms/ApplicationLab33.exe">Form</a>
             </td>
-            <td align="center">--------</td>
+            <td align="center">------</td>
         </tr>
         <tr>
             <td align="center">Block4</td>
@@ -95,8 +95,8 @@
                 Delphi<br>
                 C#<br>
             </td>
-            <td align="center">--------</td>
-            <td align="center">--------</td>
+            <td align="center">------</td>
+            <td align="center">------</td>
         </tr>
     </tbody>
 </table>
