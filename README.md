@@ -1,5 +1,4 @@
-
-    <table>
+<table>
     <thead>
         <tr>
             <th>Blocks</th>
