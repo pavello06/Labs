@@ -1,4 +1,4 @@
-<div display = "flex">
+<div style="display: flex;">
     <table>
     <thead>
         <tr>
